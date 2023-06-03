@@ -1,7 +1,11 @@
 const ListItem = ({ title = "Titulo", description = "Descrição do item" }) => (
-    <div className="container">
-        <h1>{title}</h1>
-        <h2>{description}</h2>
+    <div className="margin-not-left">
+        <div className="container-row">
+            <h2>{title}</h2>
+        </div>
+        <div className="container-row">
+            <h3>{description}</h3>
+        </div>
     </div>
 );
 

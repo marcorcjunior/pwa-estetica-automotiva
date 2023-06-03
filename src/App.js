@@ -1,17 +1,32 @@
 import './App.css';
+
+import { useState } from 'react';
+
+import Header from './components/Header';
 import Container from './components/Container';
 import ListItem from './components/ListItem';
+import FormUsuario from './components/FormUsuario';
 
-function App() {
+const App = () => {
+  const [listaClientes, setListaClientes] = useState([]);
+
+  const onFormSubmit = ({ nomeCompleto, documento }) =>
+    setListaClientes([...listaClientes, { nomeCompleto, documento }]);
+
   return (
-    <div className="container">
-      <Container>
-        <ListItem title="Hello world" description="Treinando react" />
-        <ListItem title="Hello world" />
-        <ListItem description="Treinando react" />
-        <ListItem />
+    <Container>
+      <Header title={"Estética Automotiva"} icon={"directions_car"} />
+      <Container style={{ 'margin': '24px' }}>
+
+        <FormUsuario onFormSubmit={onFormSubmit} />
+
+        {listaClientes.map(
+          ({ nomeCompleto, documento }, key) =>
+            <ListItem key={key} title={nomeCompleto} description={documento} />
+        )}
+
       </Container>
-    </div>
+    </Container>
   );
 }
 
