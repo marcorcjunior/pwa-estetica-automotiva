@@ -12,7 +12,6 @@ import {
 } from '@mui/material';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Header = ({ title, goBack = false, exit = false }) => {
@@ -27,6 +26,12 @@ const Header = ({ title, goBack = false, exit = false }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const sair = () => {
+        localStorage.removeItem('token');
+        handleClose();
+        navigate('/');
+    }
 
     return (
         <AppBar position="static">
@@ -76,10 +81,10 @@ const Header = ({ title, goBack = false, exit = false }) => {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}>
-                                    Minha conta
+                                <MenuItem>
+                                    {localStorage.getItem('email')}
                                 </MenuItem>
-                                <MenuItem onClick={handleClose}>
+                                <MenuItem onClick={sair}>
                                     Sair
                                 </MenuItem>
                             </Menu>

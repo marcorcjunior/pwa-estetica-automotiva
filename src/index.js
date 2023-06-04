@@ -5,16 +5,25 @@ import ReactDOM from 'react-dom/client';
 
 import {
   createBrowserRouter,
+  Navigate,
   RouterProvider,
 } from "react-router-dom";
 
-import { ThemeProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import Provider from './provider';
 
 import Login from './pages/Login';
 import Home from './pages/Home';
+
 import Cliente from './pages/Cliente';
+import ListaClientes from './pages/ListaClientes';
+
+import Usuario from './pages/Usuario';
+
 import ErrorPage from './pages/ErrorPage';
+import isAuthenticated from './middleware/isAuthenticated';
+
+const privateRoute = (children) =>
+  isAuthenticated() ? children : <Navigate to="/" />;
 
 const router = createBrowserRouter([
   {
@@ -24,42 +33,32 @@ const router = createBrowserRouter([
   },
   {
     path: "/home",
-    element: <Home />,
+    element: privateRoute(<Home />),
+  },
+  {
+    path: "/clientes",
+    element: privateRoute(<ListaClientes />),
   },
   {
     path: "/cliente",
-    element: <Cliente />,
+    element: privateRoute(<Cliente />),
   },
   {
     path: "/cliente/:id",
-    element: <Cliente />,
+    element: privateRoute(<Cliente />),
+  },
+  {
+    path: "/perfil",
+    element: privateRoute(<Usuario />),
   },
 ]);
-
-const theme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      light: '#606dbb',
-      main: '#3949ab',
-      dark: '#273377',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#5fa463',
-      main: '#388e3c',
-      dark: '#27632a',
-      contrastText: '#000',
-    },
-  },
-});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
+    <Provider>
       <RouterProvider router={router} />
-    </ThemeProvider>
+    </Provider>
   </React.StrictMode>
 );

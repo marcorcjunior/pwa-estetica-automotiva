@@ -1,10 +1,11 @@
 import './index.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, Button, Snackbar, TextField, Typography } from '@mui/material';
 
 import Container from '../../components/Container';
 import Header from '../../components/Header';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import api from '../../utils/api';
 
 const styles = {
     customInput: {
@@ -18,16 +19,53 @@ const styles = {
 const FormUsuario = () => {
     let navigate = useNavigate();
     const { id } = useParams();
-    const [searchParams] = useSearchParams();
-
     const [alert, setAlert] = useState(false);
-    const [nomeCompleto, setNomeCompleto] = useState('');
-    const [documento, setDocumento] = useState('');
 
-    const newId = Number.parseInt(searchParams.get('position')) + 1;
+    const [nome, setNome] = useState('');
+    const [email, setEmail] = useState('');
+    const [telefone, setTelefone] = useState('');
 
-    const onFormSubmit = (usuario) =>
-        navigate(`/home?${new URLSearchParams(usuario).toString()}`);
+    const onFormSubmit = (usuario) => {
+        navigate(-1);
+    }
+
+    const getClienteById = () =>
+        api.get(`/clientes/find/${id}`)
+            .then(({ data }) => {
+                setNome(data.nome);
+                setEmail(data.email);
+                setTelefone(data.telefone);
+            })
+            .catch((error) => {
+
+            });
+
+    const getClienteFull = () => ({
+        nome,
+        email,
+        telefone
+    });
+
+    const updateCliente = () => {
+        const cliente = getClienteFull();
+        console.log(cliente);
+    }
+
+    const createCliente = () => {
+        const cliente = getClienteFull();
+        console.log(cliente);
+    }
+
+    useEffect(() => {
+        if (id) {
+            getClienteById();
+        }
+    }, []);
+
+    // if (newId && nomeCompleto && documento) {
+    //     return onFormSubmit({ id: newId, nomeCompleto, documento });
+    // }
+    // return setAlert(true);
 
     return (
         <>
@@ -45,32 +83,35 @@ const FormUsuario = () => {
                         <div>
                             <Container>
                                 <TextField
-                                    id="nomeCompleto"
+                                    id="nome"
                                     label="Nome completo"
                                     variant="filled"
                                     style={styles.customInput}
-                                    value={nomeCompleto}
-                                    onChange={({ target: { value } }) => setNomeCompleto(value)}
+                                    value={nome}
+                                    onChange={({ target: { value } }) => setNome(value)}
                                 />
                                 <TextField
-                                    id="cpf"
-                                    label="CPF"
+                                    id="email"
+                                    label="E-mail"
                                     variant="filled"
                                     style={styles.customInput}
-                                    value={documento}
-                                    onChange={({ target: { value } }) => setDocumento(value)}
+                                    value={email}
+                                    onChange={({ target: { value } }) => setEmail(value)}
+                                />
+                                <TextField
+                                    id="telefone"
+                                    label="Telefone"
+                                    variant="filled"
+                                    style={styles.customInput}
+                                    value={telefone}
+                                    onChange={({ target: { value } }) => setTelefone(value)}
                                 />
                             </Container>
 
                             <br />
 
-                            <Button variant='contained' onClick={() => {
-                                if (newId && nomeCompleto && documento) {
-                                    return onFormSubmit({ id: newId, nomeCompleto, documento });
-                                }
-                                return setAlert(true);
-                            }}>
-                                Adicionar
+                            <Button variant='contained' onClick={() => id ? updateCliente() : createCliente()}>
+                                {id ? 'Alterar' : 'Adicionar'}
                             </Button>
 
                         </div>

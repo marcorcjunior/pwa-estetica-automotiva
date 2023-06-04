@@ -12,9 +12,33 @@ import { useNavigate } from 'react-router-dom';
 
 import Header from '../../components/Header';
 import Container from '../../components/Container';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../provider';
 
 const Login = () => {
   let navigate = useNavigate();
+  const auth = useContext(AuthContext);
+
+  const [email, setEmail] = useState("admin@email.com"); //admin@email.com
+  const [senha, setSenha] = useState("admin"); //admin
+
+  const signin = () =>
+    auth.logar(email, senha)
+      .then(({ data: { token } }) => {
+        if (token) {
+          localStorage.setItem('token', token);
+          localStorage.setItem('email', email);
+        }
+      })
+      .then(() => {
+        if (localStorage.getItem('token')) {
+          navigate('/home');
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+        // localStorage.removeItem('token');
+      });
 
   return (
     <Container>
@@ -29,14 +53,30 @@ const Login = () => {
             </Typography>
             <br />
 
-            <TextField id="email" label="E-mail" variant="filled" style={{ display: 'flex', flex: 1 }} />
+            <TextField
+              id="email"
+              label="E-mail"
+              variant="filled"
+              type='email'
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              style={{ display: 'flex', flex: 1 }}
+            />
             <br />
 
-            <TextField id="senha" label="Senha" variant="filled" style={{ display: 'flex', flex: 1 }} />
+            <TextField
+              id="senha"
+              label="Senha"
+              variant="filled"
+              type='password'
+              value={senha}
+              onChange={(event) => setSenha(event.target.value)}
+              style={{ display: 'flex', flex: 1 }}
+            />
 
           </CardContent>
           <CardActions style={{ padding: '24px' }}>
-            <Button variant='contained' onClick={() => navigate('/home')} style={{ width: '100%' }} >
+            <Button variant='contained' onClick={signin} style={{ width: '100%' }} >
               Logar
             </Button>
           </CardActions>
