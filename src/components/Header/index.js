@@ -1,13 +1,19 @@
 import './index.css';
-import Icon from "../Icon";
+
+import {
+    AppBar,
+    Toolbar,
+    Typography
+} from '@mui/material';
 
 const Header = ({ title, icon }) => (
-    <header className="personHeader">
-        <Icon icon={icon} size='64px' alt={title} padding='8px' />
-        <h2 style={{ margin: '24px' }}>
-            {title}
-        </h2>
-    </header>
+    <AppBar position="static">
+        <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                {title}
+            </Typography>
+        </Toolbar>
+    </AppBar>
 );
 
 export default Header;
