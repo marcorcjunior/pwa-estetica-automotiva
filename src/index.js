@@ -1,3 +1,5 @@
+import './index.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
@@ -6,7 +8,9 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import './index.css';
+import { ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Cliente from './pages/Cliente';
@@ -32,10 +36,30 @@ const router = createBrowserRouter([
   },
 ]);
 
+const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      light: '#606dbb',
+      main: '#3949ab',
+      dark: '#273377',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#5fa463',
+      main: '#388e3c',
+      dark: '#27632a',
+      contrastText: '#000',
+    },
+  },
+});
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ThemeProvider theme={theme}>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </React.StrictMode>
 );

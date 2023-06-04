@@ -1,6 +1,6 @@
 import './index.css';
 import { useState } from 'react';
-import { Button, TextField, Typography } from '@mui/material';
+import { Alert, Button, Snackbar, TextField, Typography } from '@mui/material';
 
 import Container from '../../components/Container';
 import Header from '../../components/Header';
@@ -20,6 +20,7 @@ const FormUsuario = () => {
     const { id } = useParams();
     const [searchParams] = useSearchParams();
 
+    const [alert, setAlert] = useState(false);
     const [nomeCompleto, setNomeCompleto] = useState('');
     const [documento, setDocumento] = useState('');
 
@@ -31,7 +32,7 @@ const FormUsuario = () => {
     return (
         <>
             <Container>
-                <Header title={"Estética Automotiva"} icon={"directions_car"} />
+                <Header title={"Estética Automotiva"} goBack />
                 <Container style={{ 'margin': '24px', alignItems: 'center' }}>
 
                     <Typography variant="h4" component="div">
@@ -63,14 +64,25 @@ const FormUsuario = () => {
 
                             <br />
 
-                            <Button variant='contained' onClick={() => onFormSubmit({ id: newId, nomeCompleto, documento })}>
+                            <Button variant='contained' onClick={() => {
+                                if (newId && nomeCompleto && documento) {
+                                    return onFormSubmit({ id: newId, nomeCompleto, documento });
+                                }
+                                return setAlert(true);
+                            }}>
                                 Adicionar
                             </Button>
 
                         </div>
                     </form>
+                    <Snackbar open={alert} autoHideDuration={6000} onClose={() => setAlert(false)} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                        <Alert onClose={() => setAlert(false)} severity="error" sx={{ width: '100%' }}>
+                            Todos os campos são obrigatorios!
+                        </Alert>
+                    </Snackbar>
                 </Container>
             </Container>
+
         </>
     );
 }

@@ -11,6 +11,7 @@ import { Fab, IconButton, Paper, Table, TableBody, TableCell, TableContainer, Ta
 
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Home = () => {
   let navigate = useNavigate();
@@ -40,7 +41,7 @@ const Home = () => {
   return (
     <>
       <Container>
-        <Header title={"Estética Automotiva"} icon={"directions_car"} />
+        <Header title={"Estética Automotiva"} exit />
         <Container style={{ 'margin': '24px', alignItems: 'center' }}>
 
           <Typography variant="h4" component="div">
@@ -53,18 +54,10 @@ const Home = () => {
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>
-                      ID
-                    </TableCell>
-                    <TableCell align="center">
-                      Nome Completo
-                    </TableCell>
-                    <TableCell align="right">
-                      CPF
-                    </TableCell>
-                    <TableCell align="right">
-                      Ações
-                    </TableCell>
+                    <TableCell align="left">ID</TableCell>
+                    <TableCell align="left">Nome Completo</TableCell>
+                    <TableCell align="left">CPF</TableCell>
+                    <TableCell align="center">Ações</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -73,17 +66,11 @@ const Home = () => {
                       key={index}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                      <TableCell component="th" scope="row">
-                        {row.id}
-                      </TableCell>
-                      <TableCell align="center" component="th" scope="row">
-                        {row.nomeCompleto}
-                      </TableCell>
-                      <TableCell align="right">
-                        {row.cpf}
-                      </TableCell>
+                      <TableCell>{row.id}</TableCell>
+                      <TableCell>{row.nomeCompleto}</TableCell>
+                      <TableCell>{row.cpf}</TableCell>
 
-                      <TableCell align="right">
+                      <TableCell align="center">
                         <IconButton
                           color="primary"
                           aria-label="Atualizar registro"
@@ -91,7 +78,15 @@ const Home = () => {
                         >
                           <EditIcon />
                         </IconButton>
+                        <IconButton
+                          color="error"
+                          aria-label="Excluir registro"
+                          onClick={() => navigate(`/cliente/${row.id}`)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
                       </TableCell>
+
                     </TableRow>
                   ))}
                 </TableBody>
