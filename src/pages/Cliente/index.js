@@ -25,10 +25,6 @@ const FormUsuario = () => {
     const [email, setEmail] = useState('');
     const [telefone, setTelefone] = useState('');
 
-    const onFormSubmit = (usuario) => {
-        navigate(-1);
-    }
-
     const getClienteById = () =>
         api.get(`/clientes/find/${id}`)
             .then(({ data }) => {
@@ -53,7 +49,13 @@ const FormUsuario = () => {
 
     const createCliente = () => {
         const cliente = getClienteFull();
-        console.log(cliente);
+        api.post('clientes/create', cliente)
+            .then((resp) => {
+                navigate(-1);
+            })
+            .catch((error) => {
+                setAlert(true);
+            });
     }
 
     useEffect(() => {
