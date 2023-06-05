@@ -81,7 +81,7 @@ const Header = ({ title, goBack = false, exit = false }) => {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem>
+                                <MenuItem onClick={() => navigate('/perfil')}>
                                     {localStorage.getItem('email')}
                                 </MenuItem>
                                 <MenuItem onClick={sair}>

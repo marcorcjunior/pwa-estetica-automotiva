@@ -4,7 +4,7 @@ import { Alert, Button, Snackbar, TextField, Typography } from '@mui/material';
 
 import Container from '../../components/Container';
 import Header from '../../components/Header';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../utils/api';
 
 const styles = {
@@ -44,7 +44,13 @@ const FormUsuario = () => {
 
     const updateCliente = () => {
         const cliente = getClienteFull();
-        console.log(cliente);
+        api.put(`/clientes/update/${id}`, cliente)
+            .then((resp) => {
+                navigate(-1);
+            })
+            .catch((error) => {
+                setAlert(true);
+            });
     }
 
     const createCliente = () => {
@@ -62,12 +68,7 @@ const FormUsuario = () => {
         if (id) {
             getClienteById();
         }
-    }, []);
-
-    // if (newId && nomeCompleto && documento) {
-    //     return onFormSubmit({ id: newId, nomeCompleto, documento });
-    // }
-    // return setAlert(true);
+    }, [id]);
 
     return (
         <>
